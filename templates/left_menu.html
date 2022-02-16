@@ -1,0 +1,31 @@
+<div class="panel panel-primary">
+              <div class="panel-heading">
+                <h3 class="panel-title">小说分类</h3>
+              </div>
+              <div class="panel-body">
+                {% for category in category_list %}
+                    <p><a href="/{{ username }}/category/{{ category.2 }}">{{ category.0 }}</a>&nbsp;&nbsp;<span style="color: #653b8a; font-size: large">({{ category.1 }})</span></p>
+                {% endfor %}
+
+              </div>
+            </div>
+<div class="panel panel-danger">
+  <div class="panel-heading">
+    <h3 class="panel-title">小说标签</h3>
+  </div>
+  <div class="panel-body">
+    {% for tag in tag_list %}
+        <p><a href="/{{ username }}/tag/{{ tag.2 }}">{{ tag.0 }}</a>&nbsp;&nbsp;<span style="color: #653b8a; font-size: large">({{ tag.1 }})</span></p>
+    {% endfor %}
+  </div>
+</div>
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title">日期归档</h3>
+  </div>
+  <div class="panel-body">
+    {% for date in date_list %}
+        <p><a href="/{{ username }}/archive/{{ date.0|date:'Y-m' }}">{{ date.0|date:'Y-m' }}</a>&nbsp;&nbsp;<span style="color: #653b8a; font-size: large">({{ date.1 }})</span></p>
+    {% endfor %}
+  </div>
+</div>

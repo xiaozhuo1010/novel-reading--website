@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+{#    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">#}
+{#    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>#}
+    {% load static %}
+    <script src="{% static 'js/jQuery-3.6.0.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'bootstrap-3.4.1-dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'sweetalert_dist/sweetalert.css' %}">
+    <script src="{% static 'bootstrap-3.4.1-dist/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'sweetalert_dist/sweetalert.js' %}"></script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+            <h1 class="text-center">注册</h1>
+            <form action="" id="myform">
+                {% csrf_token %}
+                {% for form in form_obj %}
+                    <div class="form-group">
+                        <label for="{{ form.auto_id }}">{{ form.label }}</label>
+                        {{ form }}
+                        <span style="color: #ff477c" class="pull-right">{{ form.errors.0 }}</span>
+                    </div>
+                {% endfor %}
+            </form>
+            <div class="form-group">
+                <label for="myfile">头像
+                <img src="{% static 'img/default.jpg' %}"  id="myimg" alt="" style="width: 200px; margin-left: 10px;">
+                </label>
+                <input type="file" id="myfile" name="avatar" style="display: none">
+            </div>
+
+            <input type="button" value="注册" class="btn btn-primary pull-right" id="id_commit">
+        </div>
+    </div>
+</div>
+<script>
+    $("#myfile").change(function () {
+    {#    先生成一个文件阅读器对象#}
+        let MyFileReader = new FileReader();
+        //获取上传的头像文件
+        let FileObj = $(this)[0].files[0]
+        MyFileReader.readAsDataURL(FileObj)
+        MyFileReader.onload=function(){
+            $('#myimg').attr('src',MyFileReader.result)
+        }
+
+    });
+    $('#id_commit').click(function () {
+        let formDataObj = new FormData();
+        $.each($('#myform').serializeArray(),function (index, obj){
+            formDataObj.append(obj.name, obj.value)
+        });
+        formDataObj.append('avatar', $('#myfile')[0].files[0]);
+        $.ajax({
+            url:'',
+            type:'post',
+            data: formDataObj,
+            contentType:false,
+            processData: false,
+            success:function (args) {
+                if (args.code==1000){
+                    window.location.href = args.url
+                }else{
+                    $.each(args.msg, function (index, obj){
+                        let targetId = '#id_' + index;
+                        $(targetId).next().text(obj[0]).parent().addClass('has-error')
+                    })
+                }
+            }
+        })
+    })
+    $('input').focus(function () {
+        $(this).next().text('').parent().removeClass('has-error')
+        
+    })
+</script>
+</body>
+</html>

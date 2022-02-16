@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+{#    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>#}
+{#    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">#}
+{#    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>#}
+    {% load static %}
+    <script src="{% static 'js/jQuery-3.6.0.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'bootstrap-3.4.1-dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'sweetalert_dist/sweetalert.css' %}">
+    <script src="{% static 'bootstrap-3.4.1-dist/js/bootstrap.min.js' %}"></script>
+
+    <script src="{% static 'sweetalert_dist/sweetalert.js' %}"></script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h1 class="text-center">登录</h1>
+            <div class="form-group">
+                <label for="username">用户名</label>
+                <input type="text" name="username" id="username" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" name="password" id="password" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="username">验证码</label>
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="text" name="code" id="id_code" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <img src="/get_code/" alt="" width="480" height="35" id="id_img">
+                    </div>
+                </div>
+            </div>
+            <input type="button" class="btn btn-success" value="登录" id="id_commit">
+            <span style="color: #ff6363"></span>
+        </div>
+    </div>
+</div>
+<script>
+    $('#id_img').click(function () {
+        let old_src = $(this).attr('src')
+        $(this).attr('src', old_src += '?')
+    })
+    $('#id_commit').click(function () {
+        $.ajax({
+        url:'',
+        type:'post',
+        data : {
+            'username':$('#username').val(),
+            'password':$('#password').val(),
+            'code':$('#id_code').val(),
+            'csrfmiddlewaretoken':'{{ csrf_token }}'
+        },
+        success:function (args) {
+            {#alert(args.msg)#}
+            if (args.code == 1000){
+                window.location.href = args.url
+            }else {
+                $('#id_commit').next().text(args.msg)
+            }
+        }
+    })
+    })
+</script>
+</body>
+</html>
