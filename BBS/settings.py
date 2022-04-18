@@ -126,9 +126,10 @@ USE_TZ =False
 
 STATIC_URL = '/static/'
 # 静态文件收集目录
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static')
+# ]
 
 AUTH_USER_MODEL = 'app01.UserInfo'
 
